@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found | Secure Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="glass-nav">
+            <div class="nav-content">
+                <div class="logo">
+                    <i class="fas fa-search-location"></i>
+                    <span>Campus<span>Finder</span></span>
+                </div>
+                <div class="nav-links">
+                    <a href="#" onclick="showSection('home')" class="active">Home</a>
+                    <a href="#" onclick="showSection('feed')" id="nav-feed">Portal</a>
+                    <div id="auth-links">
+                        <button onclick="openModal('login-modal')" class="btn-secondary">Login</button>
+                        <button onclick="openModal('signup-modal')" class="btn-primary">Sign Up</button>
+                    </div>
+                    <div id="user-profile" class="hidden">
+                        <span id="user-display">Hi, User</span>
+                        <button onclick="logout()" class="btn-icon"><i class="fas fa-sign-out-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Sections -->
+        <main>
+            <!-- Hero Section -->
+            <section id="home" class="view-section active">
+                <div class="hero">
+                    <div class="hero-content">
+                        <h1>Reuniting Campus <br><span class="gradient-text">One Item at a Time</span></h1>
+                        <p>A centralized portal for students to report lost belongings or return found items within seconds.</p>
+                        <div class="hero-actions">
+                            <button onclick="showSection('feed')" class="btn-primary large">Browse Portal</button>
+                            <button onclick="checkAuthAndReport()" class="btn-outline large">Report an Item</button>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="floating-badge lost">
+                            <i class="fas fa-id-card"></i>
+                            <span>Lost ID Card?</span>
+                        </div>
+                        <div class="floating-badge found">
+                            <i class="fas fa-key"></i>
+                            <span>Found Keys?</span>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?auto=format&fit=crop&q=80&w=1000" alt="Lost and Found">
+                    </div>
+                </div>
+                <div class="stats-bar">
+                    <div class="stat"><span>500+</span><p>Items Found</p></div>
+                    <div class="stat"><span>1.2k</span><p>Active Users</p></div>
+                    <div class="stat"><span>98%</span><p>Recovery Rate</p></div>
+                </div>
+            </section>
+
+            <!-- Feed Section -->
+            <section id="feed" class="view-section">
+                <div class="feed-header">
+                    <h2>Live Listings</h2>
+                    <div class="filters">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search items..." onkeyup="filterItems()">
+                        </div>
+                        <select id="statusFilter" onchange="filterItems()">
+                            <option value="">All Status</option>
+                            <option value="lost">Lost</option>
+                            <option value="found">Found</option>
+                        </select>
+                        <select id="categoryFilter" onchange="filterItems()">
+                            <option value="">All Categories</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Cards/ID">Cards/ID</option>
+                            <option value="Documents">Documents</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <button onclick="checkAuthAndReport()" class="btn-primary"><i class="fas fa-plus"></i> Report Item</button>
+                </div>
+                <div id="itemsGrid" class="items-grid">
+                    <!-- Items populated via JS -->
+                    <div class="loader"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modals -->
+        <div id="login-modal" class="modal">
+            <div class="modal-content glass">
+                <button class="close-btn" onclick="closeModal('login-modal')">&times;</button>
+                <h3>Welcome Back</h3>
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-primary full">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="signup-modal" class="modal">
+            <div class="modal-content glass">
+                <button class="close-btn" onclick="closeModal('signup-modal')">&times;</button>
+                <h3>Join the Community</h3>
+                <form id="signupForm">
+                    <div class="input-group">
+                        <label>Username</label>
+                        <input type="text" id="signupUsername" required placeholder="johndoe">
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="signupEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="signupPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-primary full">Create Account</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="report-modal" class="modal">
+            <div class="modal-content glass">
+                <button class="close-btn" onclick="closeModal('report-modal')">&times;</button>
+                <h3>Report New Item</h3>
+                <form id="reportForm">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>I Have...</label>
+                            <select id="reportStatus" required>
+                                <option value="lost">Lost Something</option>
+                                <option value="found">Found Something</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Category</label>
+                            <select id="reportCategory" required>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Cards/ID">Cards/ID</option>
+                                <option value="Documents">Documents</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Item Name</label>
+                        <input type="text" id="reportTitle" required placeholder="e.g. Blue Wallet, iPhone 13">
+                    </div>
+                    <div class="input-group">
+                        <label>Description (Color, Marks, etc.)</label>
+                        <textarea id="reportDescription" required placeholder="Provide details that help identify it..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Location</label>
+                            <input type="text" id="reportLocation" required placeholder="e.g. Library, Block C">
+                        </div>
+                        <div class="input-group">
+                            <label>Date</label>
+                            <input type="date" id="reportDate" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Contact Info (Visible to seekers)</label>
+                        <input type="text" id="reportContact" required placeholder="Phone number or Social handle">
+                    </div>
+                    <div class="input-group">
+                        <label>Upload Image</label>
+                        <div class="file-drop-area" id="dropArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click or drag image here</p>
+                            <input type="file" id="reportImage" accept="image/*">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary full">Post Report</button>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

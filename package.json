@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+<<<<<<< HEAD
     "bcrypt": "^5.1.1",
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
@@ -22,5 +23,13 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"
+=======
+    "better-sqlite3": "^12.6.2",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "multer": "^2.0.2",
+    "uuid": "^13.0.0"
+>>>>>>> fc9098cd1108c5eae28d11540c82a7696b51758f
   }
 }
