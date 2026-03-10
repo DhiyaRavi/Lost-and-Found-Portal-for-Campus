@@ -1,0 +1,67 @@
+===========================================
+POSTGRESQL DATABASE SETUP INSTRUCTIONS
+===========================================
+
+STEP 1: Create .env file in the root directory
+------------------------------------------------
+Create a file named ".env" (without quotes) with the following content:
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=campus_lost_found
+DB_USER=postgres
+DB_PASSWORD=YOUR_POSTGRES_PASSWORD_HERE
+PORT=3000
+
+⚠️ IMPORTANT: Replace YOUR_POSTGRES_PASSWORD_HERE with your actual PostgreSQL password!
+
+
+STEP 2: Create PostgreSQL Database
+------------------------------------
+Option A - Using Command Line (psql):
+  1. Open Command Prompt or PowerShell
+  2. Run: psql -U postgres
+  3. Enter your PostgreSQL password when prompted
+  4. Run: CREATE DATABASE campus_lost_found;
+  5. Run: \q (to exit)
+
+Option B - Using pgAdmin:
+  1. Open pgAdmin
+  2. Right-click on "Databases"
+  3. Select "Create" → "Database"
+  4. Name: campus_lost_found
+  5. Click "Save"
+
+
+STEP 3: Install Dependencies
+------------------------------
+Run in terminal: npm install
+
+
+STEP 4: Start the Server
+-------------------------
+Run: npm start
+
+The server will automatically create all required tables on first run.
+
+
+STEP 5: Access the Application
+-------------------------------
+Open browser: http://localhost:3000
+
+
+TROUBLESHOOTING
+---------------
+- If you get "connection refused" error:
+  → Check if PostgreSQL service is running
+  → Verify your password in .env file
+  → Make sure database name is correct
+
+- If port 3000 is in use:
+  → Change PORT=3000 to another port in .env file
+
+- If tables are not created:
+  → Check server console for error messages
+  → Verify database connection settings
+
+===========================================
